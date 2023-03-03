@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+data_collect() {
+  TPACPI="/sys/class/leds/tpacpi::kbd_backlight"
+  max=$(cat $TPACPI/max_brightness)
+  lvl=$(cat $TPACPI/brightness)
+}
+
+toggle() {
+  if [ $lvl -eq $max ]; then
+    lvl=0
+  else
+    lvl=$((lvl+1))
+  fi
+
+  echo $lvl > $TPACPI/brightness
+}
+
+source $(dirname $0)/base

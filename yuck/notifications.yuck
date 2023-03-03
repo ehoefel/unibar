@@ -1,0 +1,90 @@
+
+(defpoll bluetooth_icon  :interval "1s" "~/.config/scripts/bluetooth widget")
+(defwidget bluetooth[]
+  (eventbox
+   :onclick "~/.config/scripts/bluetooth toggle > /dev/null"
+    (literal
+     :content bluetooth_icon
+    )
+  )
+)
+
+(defvar wifi_reveal false)
+(defpoll wifi_icon       :interval "1s" "scripts/wifi icon")
+(deflisten wifi_list     :interval "5s" "scripts/wifi sub widget")
+(defwidget wifi[]
+  (eventbox
+   :onhover "~/.config/eww/src/scripts/pop wifi > /dev/null"
+   :onhoverlost "~/.config/eww/src/scripts/pop > /dev/null"
+    (label
+     :class "wifi"
+     :text "${wifi_icon}"
+    )
+  )
+)
+
+(deflisten volume_icon   "~/.config/scripts/volume sub widget")
+(defwidget volume[]
+  (eventbox
+   :onclick "~/.config/eww/src/scripts/volume toggle > /dev/null"
+   :onhover "~/.config/eww/src/scripts/pop volume > /dev/null"
+   :onhoverlost "~/.config/eww/src/scripts/pop > /dev/null"
+    (literal
+     :content volume_icon
+    )
+  )
+)
+
+(defvar bright_reveal false)
+(deflisten bright_icon   "~/.config/scripts/bright sub icon")
+(deflisten bright_perc   "~/.config/scripts/bright sub value")
+(defwidget brightness[]
+  (eventbox
+   :onhover "~/.config/eww/src/scripts/pop bright > /dev/null"
+   :onhoverlost "~/.config/eww/src/scripts/pop > /dev/null"
+    (label
+     :class "brightness"
+     :text "${bright_icon}"
+     :tooltip "${bright_perc}%"
+    )
+  )
+)
+
+(defpoll bat_icon        :interval "1m" "~/.config/scripts/bat icon")
+(defwidget battery[]
+  (label
+   :class "battery"
+   :text "${bat_icon}"
+  )
+)
+
+(defwidget power[]
+  (eventbox
+   :onclick "shutdown -h now"
+    (label
+     :class "power"
+     :text "󰤆"
+    )
+  )
+)
+
+(defwidget notifications[]
+  (box
+   :class "notification-bar"
+   :space-evenly "true"
+   :width 492
+   :halign "end"
+    (box
+     :class "systray"
+     :spacing 12
+     :orientation "h"
+     :halign "end"
+      (bluetooth)
+      (wifi)
+      (volume)
+      (brightness)
+      (battery)
+      (power)
+    )
+  )
+)

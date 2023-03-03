@@ -1,0 +1,44 @@
+
+(defwidget bright_modal[]
+  (revealer
+   :transition "crossfade"
+	 :reveal bright_reveal
+	 :duration "350ms"
+    (eventbox
+     :onhover "~/.config/scripts/pop bright > /dev/null"
+     :onhoverlost "~/.config/scripts/pop"
+	   :class "modal"
+	    (box
+       :orientation "h"
+	     :class "content span"
+	     :space-evenly false
+       :tooltip "${bright_perc}%"
+	      (label
+         :class "icon"
+	       :text "󰃠"
+         :width 30
+        )
+        (scale
+         :class "brightbar"
+			   :value bright_perc
+			   :orientation "h"
+         :width 420
+			   :max 100
+			   :min 0
+			   :onchange "~/.config/scripts/bright setv {}"
+        )
+	    )
+    )
+  )
+)
+
+(defwindow bright_modal
+ :monitor 0
+ :geometry (geometry
+            :x "0"
+            :y "35"
+            :width "492px"
+            :anchor "top right")
+ :windowtype "dock"
+  (bright_modal)
+)

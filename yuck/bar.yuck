@@ -1,0 +1,23 @@
+(include "./yuck/app-bar.yuck")
+(include "./yuck/notifications.yuck")
+
+(defwidget bar[]
+  (box
+   :class "content"
+	 :space-evenly "false"
+	 :halign "fill"
+    (app-bar)
+    (notifications)
+	)
+)
+
+(defwindow bar
+ :monitor 0
+ :geometry (geometry
+            :x "0"
+            :y "0"
+            :width "1920px"
+            :anchor "top right")
+ :windowtype "dock"
+  (bar)
+)

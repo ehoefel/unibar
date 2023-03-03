@@ -1,0 +1,204 @@
+#!/bin/bash
+
+get_focused_app(){
+  SWAYSOCK=$(find /run/user/1000 -maxdepth 1 -name 'sway-ipc*')
+  swaymsg -t get_tree \
+    | jq '.. | try select(.focused == true)'
+}
+
+data_collect() {
+  curr_app=`get_focused_app`
+  app_name=`echo $curr_app | jq -r '.name'`
+  app_wclass=`echo $curr_app | jq -r '.window_properties.class'`
+  app_wtitle=`echo $curr_app | jq -r '.window_properties.title'`
+  app_id=`echo $curr_app | jq -r '.app_id'`
+  app_pid=`echo $curr_app | jq -r '.pid'`
+
+  app=""
+  app_type=""
+  if [ "$app_id" = "kitty" ]; then
+    app="kitty"
+    app_type="terminal"
+  elif [ "$app_wclass" = "firefox" ]; then
+    app="firefox"
+    app_type="browser"
+  elif [ "$app_wclass" = "qutebrowser" ]; then
+    app="qutebrowser"
+    app_type="browser"
+  elif [[ "$app_wclass" = Gimp-* ]]; then
+    app="gimp"
+    app_type="image-editor"
+  elif [ -z "$app_pid" -o "$app_pid" = "null" ]; then
+    app=""
+    app_type="none"
+  fi
+}
+
+icon() {
+  if [ "$app_type" = "terminal" ]; then
+    echo ""
+  elif [ "$app" = "firefox" ]; then
+    echo ""
+  elif [ "$app" = "qutebrowser" ]; then
+    echo "󰦙"
+  elif [ "$app_type" = "browser" ]; then
+    echo ""
+  elif [ "$app_type" = "image-editor" ]; then
+    echo "󱇤"
+  else
+    echo ""
+  fi
+}
+
+parse_webpage_title() {
+  title=$(echo $1 | sed 's/ - qutebrowser$//')
+  icon=""
+  content="$title"
+  if [[ "$title" == *" at DuckDuckGo" ]]; then
+    page="duckduckgo"
+    icon="󰇥"
+    content=$(echo $title | sed 's/ at DuckDuckGo$//')
+  elif [[ "$title" == Reddit* ]] || [[ "$title" == *" : "* ]]; then
+    page="reddit"
+    icon=""
+    content=$(echo $title | sed 's/.* : \(\w\+\)$/r\/\1/')
+  elif [[ "$title" == *" GitHub" ]]; then
+    page="github"
+    icon=""
+    content=$(echo $title | sed 's/ . GitHub$//')
+  elif [[ "$title" == *"YouTube" ]]; then
+    page="youtube"
+    icon=""
+    content=$(echo $title | sed 's/ . YouTube//')
+  elif [[ "$title" == *"Stack Exchange" ]]; then
+    page="stack_exchange"
+    icon="󰘋"
+    content=$(echo $title | sed 's/\( - \(\w\+ \?\)\{1,3\}\)\{1,2\}$//')
+  elif [[ "$title" == *"Stack Overflow" ]]; then
+    page="stack_overflow"
+    icon=""
+    content=$(echo $title | sed 's/ - Stack Overflow$//')
+  elif [[ "$title" == *"Gmail" ]]; then
+    page="gmail"
+    icon="󰊫"
+    content=$(echo $title | sed 's/ - Gmail$//')
+  fi
+
+  content=$(echo $content | sed 's/\(.\{40\}\w\{0,5\}\).\{3,\}/\1.../')
+
+  label_icon="(label :class \"icon\" :text \"$icon\")"
+  label_title="(label :class \"title\" :text \"$content\")"
+  page_content="$label_icon $label_title"
+  echo "(box :space-evenly \"false\" :class \"page $page\" $page_content)"
+}
+
+app_info() {
+  if [ "$app_type" = "terminal" ]; then
+    info=""
+    div_start="(label :class \"separator start\" :text \"\")"
+    div_end="(label :class \"separator end\" :text \"\")"
+
+    tmux_query='#{window_active} #{pane_current_command} #{b:pane_current_path} #{pane_pid} #W'
+    base_shell=`basename $SHELL`
+    while IFS=" " read -r wa pcc pwd pp w; do
+
+      if [ "$wa" -eq 0 ]; then
+        wa=""
+      else
+        wa="active"
+      fi
+
+      ps_command=$(ps -f --no-headers --ppid $pp -o args)
+      command=$(echo $ps_command | cut -d' ' -f1 | sed 's/.*\///')
+
+      if [ "$command" = "-bash" ]; then
+        command="bash"
+      fi
+
+      if [ -z "$command" ]; then
+        command=SHELL
+      fi
+
+      case $command in
+        SHELL )
+          icon=""
+          icon_class="folder"
+          name="$pwd/"
+          ;;
+        ssh )
+          icon=""
+          icon_class="ssh"
+          ;;
+        bash )
+          icon=""
+          icon_class="exec"
+          params=$(echo $ps_command | sed "s/.*$command //")
+          name=$params
+          if [ ${#name} -gt 12 ]; then
+            name=$(echo $name | cut -d' ' -f1)
+          fi
+          name=$(echo $name | sed 's/\.\///')
+          ;;
+        vim|nvim )
+          icon=""
+          icon_class="vim"
+          name=$pwd
+          ;;
+        docker )
+          icon=""
+          icon_class="docker"
+          name=$(echo $ps_command | sed 's/.*[ \/]//' | sed 's/:.*//')
+          ;;
+        * )
+          icon=""
+          icon_class="unknown"
+          ;;
+      esac
+
+      tab_icon="(label :class \"icon $icon_class\" :text \"$icon\")"
+      tab_title="(label :class \"title\" :text \"$name\")"
+      tab_content=":class \"tab $wa\" $div_start $tab_icon $tab_title $div_end"
+      tab="(box :space-evenly \"false\" $tab_content)"
+      info="$info$tab"
+    done < <(tmux lsp -s -F "$tmux_query")
+  elif [ "$app" = "firefox" ]; then
+    div_start="(label :class \"separator start\" :text \"\")"
+    div_end="(label :class \"separator end\" :text \"\")"
+    app_title="(label :class \"page-title\" :text \"$app_wtitle\")"
+
+    info="$div_start $app_title $div_end"
+  elif [ "$app" = "qutebrowser" ]; then
+    div_start="(label :class \"separator start\" :text \"\")"
+    div_end="(label :class \"separator end\" :text \"\")"
+    title=$(parse_webpage_title "$app_wtitle")
+    app_title="(box :class \"page-title\" :space-evenly \"false\" $title)"
+
+    info="$div_start $app_title $div_end"
+  fi
+  echo "(box :class \"app-data\" :space-evenly \"false\" $info)"
+}
+
+widget() {
+  app_icon=$(icon)
+  app_class="$app $app_type"
+
+  div_end="(label :class \"separator end\" :text \"\")"
+  label_icon="(label :class \"icon\" :text \"$app_icon\")"
+  div_app_logo_content=":class \"app-logo\" $label_icon $div_end"
+  div_app_logo="(box :space-evenly \"false\" $div_app_logo_content)"
+
+  div_app_bar_content=":class \"app-bar $app_class\""
+  div_app_bar_content="$div_app_bar_content $div_app_logo `app_info`"
+  div_app_bar="(box :space-evenly \"false\" $div_app_bar_content)"
+  echo $div_app_bar
+}
+
+daemon() {
+  echo running daemon
+  swaymsg -m -t subscribe '[ "workspace", "window" ]' | while read -r _; do
+    $0 ping
+  done
+  echo done
+}
+
+source $(dirname $0)/classes/basic_script

@@ -1,0 +1,11 @@
+(deflisten app_bar       "~/.config/scripts/wm sub widget")
+(defwidget app-bar[]
+ (box
+   :class "app-bar"
+   :space-evenly "false"
+   :width 1428
+    (literal
+     :content app_bar
+    )
+  )
+)

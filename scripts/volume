@@ -1,0 +1,57 @@
+#!/bin/bash
+## Get Volume Capacity
+
+
+data_collect() {
+  mute=`pactl get-sink-mute 0 | cut -d' ' -f2`
+  value=`pactl get-sink-volume 0 | xargs | cut -d' ' -f5 | sed 's/\%//'`
+
+  if [ "$mute" = "yes" ]; then
+    mute="mute"
+  else
+    mute=""
+  fi
+
+  if [ "$value" -le "10" ]; then
+    volume="low"
+  elif [ "$value" -le "40" ]; then
+    volume="medium"
+  else
+    volume="high"
+  fi
+}
+
+icon() {
+  if [ -n "$mute" -o "$value" -eq 0 ]; then
+    echo "󰖁"
+  elif [ "$volume" = "low" ]; then
+    echo "󰕿"
+  elif [ "$volume" = "medium" ]; then
+    echo "󰖀"
+  else
+    echo "󰕾"
+  fi
+}
+
+widget() {
+  vol_icon=$(icon)
+  vol_class="volume $mute $volume"
+
+  if [ -n "$mute" ]; then
+    tooltip=""
+  else
+    tooltip=":tooltip \"$value%\""
+  fi
+
+  echo "(label :class \"$vol_class\" :text \"$vol_icon\" $tooltip)"
+}
+
+toggle() {
+  pactl set-sink-mute 0 toggle
+}
+
+setv() {
+  pactl set-sink-volume 0 $1
+}
+
+source $(dirname $0)/base

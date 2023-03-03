@@ -1,0 +1,62 @@
+#!/bin/bash
+## Get Battery Capacity
+
+data_collect() {
+
+  power_supply='/sys/class/power_supply'
+  bat0="$power_supply/BAT0"
+  bat1="$power_supply/BAT1"
+  ac="$power_supply/AC"
+
+  charging=`cat $ac/online`
+  if [ $charging = 1 ]; then
+    charging="charging"
+  else
+    charging=
+  fi
+
+  per=`cat $bat1/capacity`
+}
+
+icon() {
+  if [ -n "$charging" ]; then
+  	icon=""
+  elif [ "$per" -gt "90" ]; then
+  	icon=""
+  elif [ "$per" -gt "80" ]; then
+  	icon=""
+  elif [ "$per" -gt "70" ]; then
+  	icon=""
+  elif [ "$per" -gt "60" ]; then
+  	icon=""
+  elif [ "$per" -gt "50" ]; then
+  	icon=""
+  elif [ "$per" -gt "40" ]; then
+  	icon=""
+  elif [ "$per" -gt "30" ]; then
+  	icon=""
+  elif [ "$per" -gt "20" ]; then
+  	icon=""
+  elif [ "$per" -gt "10" ]; then
+  	icon=""
+  elif [ "$per" -gt "0" ]; then
+  	icon=""
+  else
+    icon=""
+  fi
+
+  echo "$icon"
+
+}
+
+widget() {
+  bat_icon=$(icon)
+  bat_text=$(text)
+
+  tooltip=":tooltip \"$bat_text%\""
+  bat_class="battery $charging"
+
+  echo "(label :class \"$bat_class\" :text \"$bat_icon\" $tooltip)"
+}
+
+source $(dirname $0)/base

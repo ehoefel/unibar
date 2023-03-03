@@ -1,0 +1,119 @@
+#!/bin/bash
+## Get Battery Capacity
+
+data_collect() {
+  status_data=`nmcli connection show --active`
+  if echo $status_data | grep 'wifi' > /dev/null; then
+    status="wifi"
+  elif echo $status_data | grep 'ethernet' > /dev/null; then
+    status="ethernet"
+  else
+    status="off"
+  fi
+}
+
+icon() {
+  if [ "$status" = "wifi" ]; then
+    echo "󰖩"
+  elif [ "$status" = "ethernet" ]; then
+    echo "󰈀"
+  else
+    echo "󰖪"
+  fi
+}
+
+widget() {
+
+  render_lock() {
+    if [ -z "$sec" ]; then
+      lock_icon="󱙱"
+    elif [ -z "$in_use" ]; then
+      lock_icon="󰌾"
+    else
+      lock_icon="󰿆"
+    fi
+
+    echo "(label :width 40 :class \"channel-lock\" :text \"${lock_icon}\")"
+  }
+
+  render_name() {
+    echo "(label :class \"channel-name\" :text \"${name}\")"
+  }
+
+  render_tec() {
+    tec_icon=
+    if [ "$tec" = "five-g" ]; then
+      tec_icon="󰩯"
+    fi
+    echo "(label :class \"channel-tec\" :text \"${tec_icon}\")"
+  }
+
+  render_signal() {
+    if [ "$signal" = "strong" ]; then
+      signal_icon="󰢾"
+    elif [ "$signal" = "medium" ]; then
+      signal_icon="󰢽"
+    else
+      signal_icon="󰢼"
+    fi
+
+    echo "(label :class \"channel-signal\" :text \"${signal_icon}\")"
+  }
+
+  render_row() {
+    box_options=":space-evenly false :halign \"start\" :spacing 12 :width 390"
+    row_first_part="(box ${box_options} $(render_lock) $(render_name))"
+
+    box_options=":spacing 10 :space-evenly true :halign \"fill\" :width 50"
+    row_second_part="(box ${box_options} $(render_tec) $(render_signal))"
+
+    classes="channel $in_use signal-$signal $sec $tec"
+    box_options=":class \"row $classes\" :halign \"fill\" :space-evenly false"
+    echo "(box ${box_options} ${row_first_part} ${row_second_part})"
+  }
+
+  read_data() {
+    in_use=$(echo $result_line | cut -d':' -f1)
+    if [ -n "$in_use" ]; then
+      in_use="in-use"
+    fi
+
+    name=$(echo $result_line | cut -d':' -f2)
+    name=${name:0:27}
+
+    signal=$(echo $result_line | cut -d':' -f3)
+    if [ $signal -ge 55 ]; then
+      signal="strong"
+    elif [ $signal -ge 30 ]; then
+      signal="medium"
+    else
+      signal="weak"
+    fi
+
+    sec=$(echo $result_line | cut -d':' -f4)
+    if [ -n "$sec" ]; then
+      sec="secure"
+    fi
+
+    rate=$(echo $result_line | cut -d':' -f5 | cut -d' ' -f1)
+    tec=""
+    if [ -n "$rate" -a $rate -ge 400 ]; then
+      tec="five-g"
+    fi
+  }
+
+  render_rows() {
+    nmcli -t -g IN-USE,SSID,SIGNAL,SECURITY,RATE dev wifi \
+      | grep -v '::' \
+      | while read result_line; do
+      read_data
+      render_row
+    done
+  }
+
+  box_options=":class \"list\" :orientation \"v\""
+  echo "(box ${box_options} $(render_rows | tr -d '\n'))"
+
+}
+
+source $(dirname $0)/base

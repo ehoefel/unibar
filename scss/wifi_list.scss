@@ -1,0 +1,68 @@
+.wifi_modal .wifi_title {
+	font-family: JetBrains Mono;
+	background-color: $background;
+	color: $foreground;
+  font-size: 24px;
+  padding-bottom: 1rem;
+}
+
+.wifi_modal .list {
+	font-family: JetBrains Mono;
+  padding: 0;
+  font-size: 20px;
+  padding-bottom: 1rem;
+}
+
+// Channel rules
+.wifi_modal .list .channel {
+  padding-bottom: 0.3rem;
+  font-weight: bolder;
+  border-radius: 12px;
+}
+
+.wifi_modal .list .channel.in-use {
+  background-color: $gray;
+}
+
+.wifi_modal .list .channel:hover {
+  background-color: $gray;
+}
+
+// Channel lock rules
+.wifi_modal .list .channel .channel-lock {
+  color: $yellow;
+}
+
+.wifi_modal .list .channel.secure .channel-lock {
+  color: $red;
+}
+
+.wifi_modal .list .channel.in-use .channel-lock {
+  color: $green;
+}
+
+.wifi_modal .list .channel.secure.in-use .channel-lock {
+  margin-left: 4px;
+}
+
+// Channel name rules
+.wifi_modal .list .channel.in-use .channel-name {
+  color: $blue;
+}
+
+// Channel tec rules
+.wifi_modal .list .channel.five-g .channel-tec {
+  color: $yellow;
+}
+
+.wifi_modal .list .channel.signal-strong .channel-signal {
+  color: $orange;
+}
+
+.wifi_modal .list .channel.signal-medium .channel-signal {
+  color: $magenta;
+}
+
+.wifi_modal .list .channel.signal-weak .channel-signal {
+  color: $cyan;
+}

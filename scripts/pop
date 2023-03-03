@@ -1,0 +1,65 @@
+#!/bin/bash
+
+config=~/.config/eww/
+lock=$config/.widget.lock
+
+if [ ! -f $lock ]; then
+  echo '0 0' > $lock
+fi
+
+threshold_ms="500"
+id=$RANDOM
+modal=$1
+
+lock_id=
+lock_modal=
+
+get_lock_data() {
+  lock_data=$(cat $lock)
+  lock_id=$(echo $lock_data | cut -d' ' -f1)
+  lock_modal=$(echo $lock_data | cut -d' ' -f2)
+  lock_time=$(($(date +'%s%N' -r $lock)/1000000))
+  curr_time=$(($(date +'%s%N')/1000000))
+  lock_time_diff=$(($curr_time - $lock_time))
+}
+
+off() {
+  if [ "$modal" = "none" ]; then
+    return
+  fi
+  eww -c $config update $1_reveal=false
+  sleep 0.$threshold_ms
+  eww -c $config close "${modal}_modal"
+}
+
+watch() {
+  while true; do
+    get_lock_data
+    if [ $lock_id -ne $id ]; then
+      if [ $lock_modal != $modal ]; then
+        off $modal &
+      fi
+      return
+    fi
+    sleep 0.1
+  done
+}
+
+on() {
+  get_lock_data
+
+  echo "$id $modal" > $lock
+
+  if [ $modal != "none" ]; then
+    eww -c $config open "${modal}_modal"
+    eww -c $config update "${modal}_reveal=true"
+  fi
+
+  watch
+}
+
+if [ -z "$modal" ]; then
+  modal=none
+fi
+
+on

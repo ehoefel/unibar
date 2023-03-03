@@ -1,0 +1,48 @@
+#!/bin/bash
+## Get Volume Capacity
+
+data_collect() {
+  powered=$(bluetoothctl show | grep Powered | xargs | cut -d' ' -f2)
+  if [ "$powered" = "yes" ]; then
+    power="on"
+  else
+    power="off"
+  fi
+
+  connected=$(bluetoothctl devices Connected | wc -l)
+  if [ "$connected" -ge "1" ]; then
+    connected="connected"
+  else
+    connected=""
+  fi
+}
+
+icon() {
+  if [ "$power" = "off" ]; then
+    echo "󰂲"
+  elif [ -n "$connected" ]; then
+    echo "󰋋"
+  else
+    echo "󰂯"
+  fi
+}
+
+widget() {
+  bluetooth_icon=$(icon)
+  bluetooth_class="bluetooth $power $connected"
+
+  echo "(label :class \"$bluetooth_class\" :text \"$bluetooth_icon\" )"
+}
+
+toggle() {
+  if [ "$power" = "on" ]; then
+    bluetoothctl power off
+  else
+    bluetoothctl power on
+    bluetoothctl devices | cut -d' ' -f2 | while read dev; do
+      bluetoothctl connect $dev
+    done
+  fi
+}
+
+source $(dirname $0)/base

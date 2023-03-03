@@ -1,0 +1,37 @@
+
+(defwidget wifi_modal[]
+  (revealer
+   :transition "crossfade"
+	 :reveal wifi_reveal
+	 :duration "350ms"
+    (eventbox
+     :onhover "~/.config/scripts/pop wifi > /dev/null"
+     :onhoverlost "~/.config/scripts/pop"
+	   :class "modal"
+	    (box
+       :orientation "v"
+       :valign "start"
+	     :class "content span"
+	     :space-evenly false
+        (label
+         :class "wifi_title"
+         :text "WiFi Networks"
+        )
+        (literal
+         :content wifi_list
+        )
+	    )
+    )
+  )
+)
+
+(defwindow wifi_modal
+ :monitor 0
+ :geometry (geometry
+            :x "0"
+            :y "35"
+            :width "492px"
+            :anchor "top right")
+ :windowtype "dock"
+  (wifi_modal)
+)

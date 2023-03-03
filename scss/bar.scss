@@ -1,0 +1,218 @@
+.bar .content {
+  font-family: JetBrains Mono;
+  background-color: $background;
+  color: $foreground;
+  margin-top: 3px;
+  font-size: 24px;
+}
+
+.bar .app-bar {
+  font-weight: bolder;
+  padding: 0;
+  margin: 0;
+}
+
+.bar .app-bar .app-data {
+  padding: 0;
+  margin: 0;
+}
+
+.bar .app-bar .app-logo .icon {
+  padding: 0 1rem;
+}
+
+.bar .app-bar .separator {
+  opacity: 1;
+  font-size: 28px;
+  margin-bottom: -1px;
+}
+
+.bar .app-bar .app-logo .icon {
+  background-color: $fg_inactive_tab;
+  color: $background;
+}
+
+.bar .app-bar .app-logo .separator.end {
+  color: $fg_inactive_tab;
+  background-color: $background;
+}
+
+.bar .app-bar.terminal .app-logo .icon {
+  background-color: $military;
+  color: $background;
+}
+
+.bar .app-bar.terminal .app-logo .separator.end {
+  color: $military;
+  background-color: $background;
+}
+
+.bar .app-bar.terminal .app-data .tab .icon {
+  padding: 0 1rem;
+  color: #91a580;
+}
+
+.bar .app-bar.terminal .app-data .tab .icon.vim {
+  margin-bottom: -4px;
+}
+
+.bar .app-bar.terminal .app-data .tab .icon.folder {
+  margin-bottom: -3px;
+}
+
+.bar .app-bar.terminal .app-data .tab .title {
+  padding-right: 1rem;
+}
+
+.bar .app-bar.terminal .app-data .tab {
+  background-color: $bg_inactive_tab;
+  color: $fg_inactive_tab;
+}
+
+.bar .app-bar.terminal .app-data .tab .separator.start {
+  color: $background;
+  background-color: $bg_inactive_tab;
+}
+
+.bar .app-bar.terminal .app-data .tab .separator.end {
+  background-color: $background;
+  color: $bg_inactive_tab;
+}
+
+.bar .app-bar.terminal .app-data .tab.active {
+  background-color: $bg_active_tab;
+  color: $fg_active_tab;
+}
+
+.bar .app-bar.terminal .app-data .tab.active .separator.start {
+  color: $background;
+  background-color: $bg_active_tab;
+}
+
+.bar .app-bar.terminal .app-data .tab.active .separator.end {
+  background-color: $background;
+  color: $bg_active_tab;
+}
+
+.bar .app-bar.browser .app-logo .icon {
+  background-color: $blue;
+  color: $background;
+}
+
+.bar .app-bar.browser .app-logo .separator.end {
+  color: $blue;
+  background-color: $background;
+}
+
+.bar .app-bar.browser .app-data {
+  color: $background;
+  background-color: $bg_active_tab;
+}
+
+.bar .app-bar.browser .app-data .page-title {
+  padding: 0 1rem;
+}
+
+.bar .app-bar.browser .app-data .separator.end {
+  background-color: $background;
+  color: $bg_active_tab;
+}
+
+.bar .app-bar.browser .app-data .page-title .page .icon {
+  padding-right: 1rem;
+}
+
+.bar .app-bar.browser .app-data .page-title .page.reddit .icon {
+  margin-top: 2px;
+}
+
+.bar .app-bar.browser .app-data .page-title .page.gmail .icon {
+  margin-top: 0px;
+}
+
+.bar .app-bar.firefox .app-logo .icon {
+  background-color: $orange;
+  color: $background;
+}
+
+.bar .app-bar.firefox .app-logo .separator.end {
+  color: $orange;
+  background-color: $background;
+}
+
+.bar .app-bar.terminal .app-data .separator.start {
+  color: $background;
+  background-color: $bg_active_tab;
+}
+
+.bar .content .notification-bar {
+  padding: 0 1rem 0 0;
+}
+
+// Bluetooth rules
+.notification-bar .bluetooth {
+  color: $foreground;
+  font-size: 24px;
+  font-weight: normal;
+  margin-top: 6px;
+  opacity: 0.5;
+}
+
+.notification-bar .bluetooth.on {
+  color: $cyan;
+}
+
+.notification-bar .bluetooth.on.connected {
+  margin-top: 7px;
+  opacity: 1;
+}
+
+.notification-bar .wifi {
+  color: $blue;
+  font-size: 25px;
+  margin-top: 4px;
+  font-weight: normal;
+}
+
+// Volume rules
+.notification-bar .volume {
+  font-size: 25px;
+  margin-top: 6px;
+  color: $green;
+  font-weight: normal;
+}
+
+.notification-bar .volume.mute {
+  color: $foreground;
+}
+
+.notification-bar .volume.low {
+  opacity: 0.75;
+}
+
+.notification-bar .volume.medium {
+  opacity: 0.875;
+}
+
+.notification-bar .volume.high {
+  opacity: 1;
+}
+
+.notification-bar .brightness {
+  color: $yellow;
+  font-size: 22px;
+  margin-top: 4px;
+}
+
+.notification-bar .battery {
+  color: $orange;
+  font-size: 20px;
+  margin-top: 3px;
+}
+
+.notification-bar .power {
+  color: $red;
+  font-weight: bolder;
+  margin-top: 2px;
+}
+

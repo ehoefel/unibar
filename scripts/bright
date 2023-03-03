@@ -1,0 +1,36 @@
+#!/bin/bash
+## Get Battery Capacity
+
+data_collect() {
+  perc=`xbacklight -get`
+}
+
+icon() {
+  if [ $perc -ge 80 ]; then
+    icon="󰃡"
+  elif [ $perc -ge 60 ]; then
+    icon="󰃠"
+  elif [ $perc -ge 50 ]; then
+    icon="󰃟"
+  elif [ $perc -ge 40 ]; then
+    icon="󰃞"
+  elif [ $perc -ge 30 ]; then
+    icon="󰃜"
+  elif [ $perc -ge 20 ]; then
+    icon="󰃛"
+  else
+    icon="󰃚"
+  fi
+
+  echo "$icon"
+}
+
+value() {
+  echo "$perc"
+}
+
+setv() {
+  xbacklight $1
+}
+
+source $(dirname $0)/base

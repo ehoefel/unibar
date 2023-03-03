@@ -1,0 +1,75 @@
+#!/bin/bash
+
+NAME=$(basename $0)
+
+_do_icon() {
+  get_data
+  icon
+  ping
+}
+
+_do_value() {
+  get_data
+  value
+}
+
+_do_widget() {
+  get_data
+  widget
+}
+
+_do_toggle() {
+  get_data
+  toggle
+  ping
+}
+
+_do_setv() {
+  setv $1
+  ping
+}
+
+sub() {
+  func=$1
+
+  do_func() {
+    NEEDS_DATA=true
+    get_data
+    $func
+  }
+
+  do_func
+
+  ~/.local/mbus/subscribe $NAME | while read _; do
+    do_func
+  done
+}
+
+ping() {
+  delay=$1
+  if [ -n "$delay" ]; then
+    sleep $delay
+  fi
+
+  ~/.local/mbus/ping $NAME
+}
+
+get_data() {
+
+  if ! $NEEDS_DATA; then
+    return
+  fi
+
+  NEEDS_DATA=false
+
+  data_collect
+}
+
+[ "$1" = "icon" ]   && _do_icon      && exit
+[ "$1" = "value" ]  && _do_value     && exit
+[ "$1" = "widget" ] && _do_widget    && exit
+[ "$1" = "toggle" ] && _do_toggle    && exit
+[ "$1" = "set" ]    && _do_setv "$2" && exit
+[ "$1" = "sub" ]    && sub "$2"      && exit
+[ "$1" = "ping" ]   && ping "$2"     && exit
+[ "$1" = "daemon" ] && daemon        && exit
