@@ -1,4 +1,4 @@
-(deflisten app_bar       "~/.config/scripts/wm sub widget")
+(deflisten app_bar       "scripts/wm sub widget")
 (defwidget app-bar[]
  (box
    :class "app-bar"

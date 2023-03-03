@@ -1,8 +1,8 @@
 
-(defpoll bluetooth_icon  :interval "1s" "~/.config/scripts/bluetooth widget")
+(defpoll bluetooth_icon  :interval "1s" "scripts/bluetooth widget")
 (defwidget bluetooth[]
   (eventbox
-   :onclick "~/.config/scripts/bluetooth toggle > /dev/null"
+   :onclick "scripts/bluetooth toggle > /dev/null"
     (literal
      :content bluetooth_icon
     )
@@ -14,8 +14,8 @@
 (deflisten wifi_list     :interval "5s" "scripts/wifi sub widget")
 (defwidget wifi[]
   (eventbox
-   :onhover "~/.config/eww/src/scripts/pop wifi > /dev/null"
-   :onhoverlost "~/.config/eww/src/scripts/pop > /dev/null"
+   :onhover "scripts/pop wifi > /dev/null"
+   :onhoverlost "scripts/pop > /dev/null"
     (label
      :class "wifi"
      :text "${wifi_icon}"
@@ -23,12 +23,12 @@
   )
 )
 
-(deflisten volume_icon   "~/.config/scripts/volume sub widget")
+(deflisten volume_icon   "scripts/volume sub widget")
 (defwidget volume[]
   (eventbox
-   :onclick "~/.config/eww/src/scripts/volume toggle > /dev/null"
-   :onhover "~/.config/eww/src/scripts/pop volume > /dev/null"
-   :onhoverlost "~/.config/eww/src/scripts/pop > /dev/null"
+   :onclick "scripts/volume toggle > /dev/null"
+   :onhover "scripts/pop volume > /dev/null"
+   :onhoverlost "scripts/pop > /dev/null"
     (literal
      :content volume_icon
     )
@@ -36,12 +36,12 @@
 )
 
 (defvar bright_reveal false)
-(deflisten bright_icon   "~/.config/scripts/bright sub icon")
-(deflisten bright_perc   "~/.config/scripts/bright sub value")
+(deflisten bright_icon   "scripts/bright sub icon")
+(deflisten bright_perc   "scripts/bright sub value")
 (defwidget brightness[]
   (eventbox
-   :onhover "~/.config/eww/src/scripts/pop bright > /dev/null"
-   :onhoverlost "~/.config/eww/src/scripts/pop > /dev/null"
+   :onhover "scripts/pop bright > /dev/null"
+   :onhoverlost "scripts/pop > /dev/null"
     (label
      :class "brightness"
      :text "${bright_icon}"
@@ -50,7 +50,7 @@
   )
 )
 
-(defpoll bat_icon        :interval "1m" "~/.config/scripts/bat icon")
+(defpoll bat_icon        :interval "1m" "scripts/bat icon")
 (defwidget battery[]
   (label
    :class "battery"

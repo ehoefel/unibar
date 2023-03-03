@@ -5,8 +5,8 @@
 	 :reveal bright_reveal
 	 :duration "350ms"
     (eventbox
-     :onhover "~/.config/scripts/pop bright > /dev/null"
-     :onhoverlost "~/.config/scripts/pop"
+     :onhover "scripts/pop bright > /dev/null"
+     :onhoverlost "scripts/pop"
 	   :class "modal"
 	    (box
        :orientation "h"
@@ -25,7 +25,7 @@
          :width 420
 			   :max 100
 			   :min 0
-			   :onchange "~/.config/scripts/bright setv {}"
+			   :onchange "scripts/bright setv {}"
         )
 	    )
     )

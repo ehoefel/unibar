@@ -1,6 +1,6 @@
 #!/bin/bash
 
-config=~/.config/eww/
+config=$(dirname $0)/../
 lock=$config/.widget.lock
 
 if [ ! -f $lock ]; then

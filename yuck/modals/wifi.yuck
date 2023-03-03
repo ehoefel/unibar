@@ -5,8 +5,8 @@
 	 :reveal wifi_reveal
 	 :duration "350ms"
     (eventbox
-     :onhover "~/.config/scripts/pop wifi > /dev/null"
-     :onhoverlost "~/.config/scripts/pop"
+     :onhover "scripts/pop wifi > /dev/null"
+     :onhoverlost "scripts/pop"
 	   :class "modal"
 	    (box
        :orientation "v"

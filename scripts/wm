@@ -201,4 +201,4 @@ daemon() {
   echo done
 }
 
-source $(dirname $0)/classes/basic_script
+source $(dirname $0)/base
