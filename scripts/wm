@@ -54,7 +54,7 @@ parse_webpage_title() {
   title=$(echo $1 | sed 's/ - qutebrowser$//')
   icon=""
   content="$title"
-  if [[ "$title" == *" at DuckDuckGo" ]]; then
+  if [[ "$title" == DuckDuckGo* ]] || [[ "$title" == *" at DuckDuckGo" ]]; then
     page="duckduckgo"
     icon="󰇥"
     content=$(echo $title | sed 's/ at DuckDuckGo$//')
@@ -82,7 +82,15 @@ parse_webpage_title() {
     page="gmail"
     icon="󰊫"
     content=$(echo $title | sed 's/ - Gmail$//')
+  elif [[ "$title" == *"Thuisbezorgd."* ]]; then
+    page="takeaway"
+    icon="󰉚"
+    content=$(echo $title | sed 's/ | Thuisbezorgd.*//')
+  elif [[ "$title" == "Nerd Fonts - "* ]]; then
+    page="nerdfonts"
+    icon="󰊪"
   fi
+
 
   content=$(echo $content | sed 's/\(.\{40\}\w\{0,5\}\).\{3,\}/\1.../')
 
