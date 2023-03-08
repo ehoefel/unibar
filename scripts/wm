@@ -50,54 +50,70 @@ icon() {
   fi
 }
 
-parse_webpage_title() {
-  title=$(echo $1 | sed 's/ - qutebrowser$//')
-  icon=""
-  content="$title"
-  if [[ "$title" == DuckDuckGo* ]] || [[ "$title" == *" at DuckDuckGo" ]]; then
-    page="duckduckgo"
-    icon="󰇥"
-    content=$(echo $title | sed 's/ at DuckDuckGo$//')
-  elif [[ "$title" == Reddit* ]] || [[ "$title" == *" : "* ]]; then
-    page="reddit"
-    icon=""
-    content=$(echo $title | sed 's/.* : \(\w\+\)$/r\/\1/')
-  elif [[ "$title" == *" GitHub" ]]; then
-    page="github"
-    icon=""
-    content=$(echo $title | sed 's/ . GitHub$//')
-  elif [[ "$title" == *"YouTube" ]]; then
-    page="youtube"
-    icon=""
-    content=$(echo $title | sed 's/ . YouTube//')
-  elif [[ "$title" == *"Stack Exchange" ]]; then
-    page="stack_exchange"
-    icon="󰘋"
-    content=$(echo $title | sed 's/\( - \(\w\+ \?\)\{1,3\}\)\{1,2\}$//')
-  elif [[ "$title" == *"Stack Overflow" ]]; then
-    page="stack_overflow"
-    icon=""
-    content=$(echo $title | sed 's/ - Stack Overflow$//')
-  elif [[ "$title" == *"Gmail" ]]; then
-    page="gmail"
-    icon="󰊫"
-    content=$(echo $title | sed 's/ - Gmail$//')
-  elif [[ "$title" == *"Thuisbezorgd."* ]]; then
-    page="takeaway"
-    icon="󰉚"
-    content=$(echo $title | sed 's/ | Thuisbezorgd.*//')
-  elif [[ "$title" == "Nerd Fonts - "* ]]; then
-    page="nerdfonts"
-    icon="󰊪"
-  fi
+parse_webpage_tabs() {
+  file=~/.local/share/qutebrowser/tabs
+  tabs=""
+  while IFS=$'\t' read -r active url name; do
+    echo active: $active >&2
+    echo url: $url >&2
+    echo name: $name >&2
+    if [ "$active" = 'y' ]; then
+      active='active'
+    else
+      active=''
+    fi
+    icon=""
+    content="$name"
+    if [[ "$url" == *duckduckgo.com/* ]]; then
+      page="duckduckgo"
+      icon="󰇥"
+      content=$(echo $name | sed 's/ at DuckDuckGo$//')
+    elif [[ "$url" == *reddit.com/* ]]; then
+      page="reddit"
+      icon=""
+      content=$(echo $name | sed 's/.* : \(\w\+\)$/r\/\1/')
+    elif [[ "$url" == *github.com/* ]]; then
+      page="github"
+      icon="󰊤"
+      content=$(echo $name | sed 's/ . GitHub$//')
+    elif [[ "$url" == *youtube.com* ]]; then
+      page="youtube"
+      icon="󰗃"
+      content=$(echo $name | sed 's/ . YouTube//')
+    elif [[ "$url" == *stackexchange.com/* ]]; then
+      page="stack_exchange"
+      icon="󰘋"
+      content=$(echo $name | sed 's/\( - \(\w\+ \?\)\{1,3\}\)\{1,2\}$//')
+    elif [[ "$url" == *stackoverflow.com/* ]]; then
+      page="stack_overflow"
+      icon=""
+      content=$(echo $name | sed 's/ - Stack Overflow$//')
+    elif [[ "$url" == *mail.google.com/* ]]; then
+      page="gmail"
+      icon="󰊫"
+      content=$(echo $name | sed 's/ - Gmail$//')
+    elif [[ "$url" == *thuisbezorgd.com/* ]]; then
+      page="takeaway"
+      icon="󰉚"
+      content=$(echo $name | sed 's/ | Thuisbezorgd.*//')
+    elif [[ "$url" == *nerdfonts.com/* ]]; then
+      page="nerdfonts"
+      icon="󰊪"
+    fi
 
+    content=$(echo $content | sed 's/\(.\{40\}\w\{0,5\}\).\{3,\}/\1.../')
 
-  content=$(echo $content | sed 's/\(.\{40\}\w\{0,5\}\).\{3,\}/\1.../')
+    div_start="(label :class \"separator start\" :text \"\")"
+    div_end="(label :class \"separator end\" :text \"\")"
+    label_icon="(label :class \"icon\" :text \"$icon\")"
+    label_title="(label :class \"title\" :text \"$content\")"
+    box_children="$div_start $label_icon $label_title $div_end"
+    tab_content=":class \"tab $page $active\" $box_children"
+    tab="(box :space-evenly \"false\" $tab_content)"
 
-  label_icon="(label :class \"icon\" :text \"$icon\")"
-  label_title="(label :class \"title\" :text \"$content\")"
-  page_content="$label_icon $label_title"
-  echo "(box :space-evenly \"false\" :class \"page $page\" $page_content)"
+    tabs=$tabs$tab
+  done < <(cat $file)
+  echo $tabs
 }
 
 app_info() {
@@ -176,12 +192,7 @@ app_info() {
 
     info="$div_start $app_title $div_end"
   elif [ "$app" = "qutebrowser" ]; then
-    div_start="(label :class \"separator start\" :text \"\")"
-    div_end="(label :class \"separator end\" :text \"\")"
-    title=$(parse_webpage_title "$app_wtitle")
-    app_title="(box :class \"page-title\" :space-evenly \"false\" $title)"
-
-    info="$div_start $app_title $div_end"
+    info=$(parse_webpage_tabs)
   fi
   echo "(box :class \"app-data\" :space-evenly \"false\" $info)"
 }

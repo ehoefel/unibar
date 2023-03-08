@@ -97,6 +97,7 @@
 .bar .app-bar.browser .app-logo .icon {
   background-color: $blue;
   color: $background;
+  font-size: 25px;
 }
 
 .bar .app-bar.browser .app-logo .separator.end {
@@ -104,30 +105,68 @@
   background-color: $background;
 }
 
-.bar .app-bar.browser .app-data {
+.bar .app-bar.browser .app-data .tab .separator.start {
+  padding-right: 1rem;
   color: $background;
+  background-color: $bg_inactive_tab;
+}
+
+.bar .app-bar.browser .app-data .tab.active .separator.start {
   background-color: $bg_active_tab;
 }
 
-.bar .app-bar.browser .app-data .page-title {
-  padding: 0 1rem;
-}
-
-.bar .app-bar.browser .app-data .separator.end {
-  background-color: $background;
-  color: $bg_active_tab;
-}
-
-.bar .app-bar.browser .app-data .page-title .page .icon {
+.bar .app-bar.browser .app-data .tab .icon {
+  font-weight: normal;
   padding-right: 1rem;
+  background-color: $bg_inactive_tab;
+  color: $fg_inactive_tab;
 }
 
-.bar .app-bar.browser .app-data .page-title .page.reddit .icon {
+.bar .app-bar.browser .app-data .tab.active .icon {
+  background-color: $bg_active_tab;
+  color: $fg_active_tab;
+}
+
+.bar .app-bar.browser .app-data .tab .title {
+  padding-right: 1rem;
+  background-color: $bg_inactive_tab;
+  color: $fg_inactive_tab;
+}
+
+.bar .app-bar.browser .app-data .tab.active .title {
+  background-color: $bg_active_tab;
+  color: $fg_active_tab;
+}
+
+.bar .app-bar.browser .app-data .tab .separator.end {
+  color: $bg_inactive_tab;
+  background-color: $background;
+}
+
+.bar .app-bar.browser .app-data .tab.active .separator.end {
+  color: $bg_active_tab;
+  background-color: $background;
+}
+
+.bar .app-bar.browser .app-data .tab.duckduckgo .icon {
+  color: $orange;
+}
+
+.bar .app-bar.browser .app-data .tab.reddit .icon {
+  color: $orange;
   margin-top: 2px;
 }
 
-.bar .app-bar.browser .app-data .page-title .page.gmail .icon {
-  margin-top: 0px;
+.bar .app-bar.browser .app-data .tab.gmail .icon {
+  color: $red;
+}
+
+.bar .app-bar.browser .app-data .tab.youtube .icon {
+  color: $red;
+}
+
+.bar .app-bar.browser .app-data .tab.github .icon {
+  color: $military;
 }
 
 .bar .app-bar.firefox .app-logo .icon {
