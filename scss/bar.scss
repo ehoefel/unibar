@@ -27,24 +27,33 @@
   margin-bottom: -1px;
 }
 
-.bar .app-bar .app-logo .icon {
-  background-color: $fg_inactive_tab;
-  color: $background;
+.bar .app-bar .app-logo {
+  background-color: $background;
 }
 
 .bar .app-bar .app-logo .separator.end {
-  color: $fg_inactive_tab;
   background-color: $background;
+}
+
+.bar .app-bar .app-logo .icon {
+  background-color: transparent;
+  color: $background;
+}
+
+.bar .app-bar.none .app-logo .icon {
+  background-color: $fg_inactive_tab;
+}
+
+.bar .app-bar.none .app-logo .separator.end {
+  color: $fg_inactive_tab;
 }
 
 .bar .app-bar.terminal .app-logo .icon {
   background-color: $military;
-  color: $background;
 }
 
 .bar .app-bar.terminal .app-logo .separator.end {
   color: $military;
-  background-color: $background;
 }
 
 .bar .app-bar.terminal .app-data .tab .icon {
@@ -94,25 +103,30 @@
   color: $bg_active_tab;
 }
 
-.bar .app-bar.browser .app-logo .icon {
+.bar .app-bar.browser .app-logo {
   background-color: $blue;
-  color: $background;
-  font-size: 25px;
 }
 
 .bar .app-bar.browser .app-logo .separator.end {
   color: $blue;
-  background-color: $background;
 }
 
-.bar .app-bar.browser .app-data .tab .separator.start {
+.bar .app-bar.browser .app-logo .icon {
+  font-weight: normal;
+  margin-left: -2px;
+  margin-right: -3px;
+  margin-top: -2px;
+}
+
+.bar .app-bar.browser .app-data .separator.start {
   padding-right: 1rem;
   color: $background;
-  background-color: $bg_inactive_tab;
+  background-color: $bg_active_tab;
 }
 
-.bar .app-bar.browser .app-data .tab.active .separator.start {
-  background-color: $bg_active_tab;
+.bar .app-bar.browser .app-data .tab:not(.active) .separator.start {
+  color: $background;
+  background-color: $bg_inactive_tab;
 }
 
 .bar .app-bar.browser .app-data .tab .icon {
@@ -127,15 +141,18 @@
   color: $fg_active_tab;
 }
 
-.bar .app-bar.browser .app-data .tab .title {
-  padding-right: 1rem;
+.bar .app-bar.browser .app-data {
+  background-color: $bg_active_tab;
+  color: $fg_active_tab;
+}
+
+.bar .app-bar.browser .app-data .tab:not(.active) {
   background-color: $bg_inactive_tab;
   color: $fg_inactive_tab;
 }
 
-.bar .app-bar.browser .app-data .tab.active .title {
-  background-color: $bg_active_tab;
-  color: $fg_active_tab;
+.bar .app-bar.browser .app-data .title {
+  padding-right: 1rem;
 }
 
 .bar .app-bar.browser .app-data .tab .separator.end {
@@ -145,7 +162,6 @@
 
 .bar .app-bar.browser .app-data .tab.active .separator.end {
   color: $bg_active_tab;
-  background-color: $background;
 }
 
 .bar .app-bar.browser .app-data .tab.duckduckgo .icon {
@@ -154,7 +170,11 @@
 
 .bar .app-bar.browser .app-data .tab.reddit .icon {
   color: $orange;
-  margin-top: 2px;
+  font-size: 30px;
+  padding-top: 4px;
+  margin-top: -8px;
+  margin-bottom: -5px;
+  background-color: transparent;
 }
 
 .bar .app-bar.browser .app-data .tab.gmail .icon {
@@ -169,19 +189,32 @@
   color: $military;
 }
 
-.bar .app-bar.firefox .app-logo .icon {
+.bar .app-bar.firefox .app-logo {
   background-color: $orange;
-  color: $background;
 }
 
 .bar .app-bar.firefox .app-logo .separator.end {
   color: $orange;
-  background-color: $background;
 }
 
-.bar .app-bar.terminal .app-data .separator.start {
-  color: $background;
-  background-color: $bg_active_tab;
+.bar .app-bar.firefox .app-logo .icon {
+  font-size: 28px;
+  margin-left: 1px;
+  margin-bottom: -3px;
+  margin-top: -3px;
+}
+
+.bar .app-bar.gimp .app-logo {
+  background-color: $yellow;
+}
+
+.bar .app-bar.gimp .app-logo .separator.end {
+  color: $yellow;
+}
+
+.bar .app-bar.gimp .app-logo .icon {
+  font-size: 20px;
+  margin-right: -2px;
 }
 
 .bar .content .notification-bar {

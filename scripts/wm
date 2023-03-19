@@ -40,7 +40,7 @@ icon() {
   elif [ "$app" = "firefox" ]; then
     echo ""
   elif [ "$app" = "qutebrowser" ]; then
-    echo "󰦙"
+    echo "󰇧"
   elif [ "$app_type" = "browser" ]; then
     echo ""
   elif [ "$app_type" = "image-editor" ]; then
@@ -92,7 +92,7 @@ parse_webpage_tabs() {
       page="gmail"
       icon="󰊫"
       content=$(echo $name | sed 's/ - Gmail$//')
-    elif [[ "$url" == *thuisbezorgd.com/* ]]; then
+    elif [[ "$url" == *thuisbezorgd.*/* ]]; then
       page="takeaway"
       icon="󰉚"
       content=$(echo $name | sed 's/ | Thuisbezorgd.*//')
@@ -122,10 +122,11 @@ app_info() {
     div_start="(label :class \"separator start\" :text \"\")"
     div_end="(label :class \"separator end\" :text \"\")"
 
-    tmux_query='#{window_active} #{pane_current_command} #{b:pane_current_path} #{pane_pid} #W'
+    tmux_query='#{window_active} #{pane_current_command} #{pane_current_path} #{pane_pid} #W'
     base_shell=`basename $SHELL`
     while IFS=" " read -r wa pcc pwd pp w; do
 
+      pwd=$(echo $pwd | sed "s|^$HOME|~|")
       if [ "$wa" -eq 0 ]; then
         wa=""
       else
@@ -188,9 +189,10 @@ app_info() {
   elif [ "$app" = "firefox" ]; then
     div_start="(label :class \"separator start\" :text \"\")"
     div_end="(label :class \"separator end\" :text \"\")"
-    app_title="(label :class \"page-title\" :text \"$app_wtitle\")"
+    app_title="(label :class \"title\" :text \"$app_wtitle\")"
 
-    info="$div_start $app_title $div_end"
+    info_content="$div_start $app_title $div_end"
+    info="(box :class \"tab active\" :space-evenly \"false\" $info_content)"
   elif [ "$app" = "qutebrowser" ]; then
     info=$(parse_webpage_tabs)
   fi
