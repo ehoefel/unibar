@@ -20,14 +20,21 @@ data_collect() {
     app="kitty"
     app_type="terminal"
   elif [ "$app_wclass" = "firefox" ]; then
-    app="firefox"
+    if [[ "$app_wtitle" = *"Private Browsing" ]]; then
+      app="privefox"
+    else
+      app="firefox"
+    fi
     app_type="browser"
   elif [ "$app_wclass" = "qutebrowser" ]; then
     app="qutebrowser"
     app_type="browser"
   elif [[ "$app_wclass" = Gimp-* ]]; then
     app="gimp"
-    app_type="image-editor"
+    app_type="generic"
+  elif [ "$app_wclass" = "calibre" ]; then
+    app="calibre"
+    app_type="generic"
   elif [ -z "$app_pid" -o "$app_pid" = "null" ]; then
     app=""
     app_type="none"
@@ -39,8 +46,12 @@ icon() {
     echo ""
   elif [ "$app" = "firefox" ]; then
     echo ""
+  elif [ "$app" = "privefox" ]; then
+    echo ""
   elif [ "$app" = "qutebrowser" ]; then
     echo "󰇧"
+  elif [ "$app" = "calibre" ]; then
+    echo "󱉟"
   elif [ "$app_type" = "browser" ]; then
     echo ""
   elif [ "$app_type" = "image-editor" ]; then
@@ -62,12 +73,21 @@ parse_webpage_tabs() {
     else
       active=''
     fi
+    page=""
     icon=""
     content="$name"
     if [[ "$url" == *duckduckgo.com/* ]]; then
       page="duckduckgo"
       icon="󰇥"
       content=$(echo $name | sed 's/ at DuckDuckGo$//')
+    elif [[ "$url" == *boardgamegeek.com/* ]]; then
+      page="boardgamegeek"
+      icon="󰝮"
+      content=$(echo $name | sed 's/ | [^|]*$//')
+    elif [[ "$url" == *bol.com/* ]]; then
+      page="bol"
+      icon="󰒚"
+      content=$(echo $name | sed 's/.*| //')
     elif [[ "$url" == *reddit.com/* ]]; then
       page="reddit"
       icon=""
@@ -126,7 +146,7 @@ app_info() {
     base_shell=`basename $SHELL`
     while IFS=" " read -r wa pcc pwd pp w; do
 
-      pwd=$(echo $pwd | sed "s|^$HOME|~|")
+      pwd=$(echo $pwd | sed "s|^$HOME|~|" | sed 's|\([^/]\)$|\1/|')
       if [ "$wa" -eq 0 ]; then
         wa=""
       else
@@ -148,7 +168,7 @@ app_info() {
         SHELL )
           icon=""
           icon_class="folder"
-          name="$pwd/"
+          name="$pwd"
           ;;
         ssh )
           icon=""
@@ -186,7 +206,7 @@ app_info() {
       tab="(box :space-evenly \"false\" $tab_content)"
       info="$info$tab"
     done < <(tmux lsp -s -F "$tmux_query")
-  elif [ "$app" = "firefox" ]; then
+  elif [ "$app" = "firefox" -o "$app" = "privefox" ]; then
     div_start="(label :class \"separator start\" :text \"\")"
     div_end="(label :class \"separator end\" :text \"\")"
     app_title="(label :class \"title\" :text \"$app_wtitle\")"
@@ -195,6 +215,12 @@ app_info() {
     info="(box :class \"tab active\" :space-evenly \"false\" $info_content)"
   elif [ "$app" = "qutebrowser" ]; then
     info=$(parse_webpage_tabs)
+  else
+    div_start="(label :class \"separator start\" :text \"\")"
+    div_end="(label :class \"separator end\" :text \"\")"
+    app_title="(label :class \"title\" :text \"$app_wtitle\")"
+
+    info="$div_start $app_title $div_end"
   fi
   echo "(box :class \"app-data\" :space-evenly \"false\" $info)"
 }

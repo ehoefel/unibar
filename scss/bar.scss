@@ -118,10 +118,9 @@
   margin-top: -2px;
 }
 
-.bar .app-bar.browser .app-data .separator.start {
+.bar .app-bar.browser .app-data .tab .separator.start {
   padding-right: 1rem;
   color: $background;
-  background-color: $bg_active_tab;
 }
 
 .bar .app-bar.browser .app-data .tab:not(.active) .separator.start {
@@ -137,7 +136,7 @@
 }
 
 .bar .app-bar.browser .app-data .tab.active .icon {
-  background-color: $bg_active_tab;
+  background-color: transparent;
   color: $fg_active_tab;
 }
 
@@ -168,8 +167,36 @@
   color: $orange;
 }
 
+.bar .app-bar.browser .app-data .tab.bol .icon {
+  font-size: 20px;
+}
+
+.bar .app-bar.browser .app-data .tab.active.bol {
+  background-color: #0000a4;
+}
+
+.bar .app-bar.browser .app-data .tab.active.bol .separator.end {
+  color: #0000a4;
+}
+
+.bar .app-bar.browser .app-data .tab.active.bol .icon {
+  color: white;
+}
+
+.bar .app-bar.browser .app-data .tab.active.boardgamegeek {
+  background-color: #3f3a60;
+}
+
+.bar .app-bar.browser .app-data .tab.active.boardgamegeek .separator.end {
+  color: #3f3a60;
+}
+
+.bar .app-bar.browser .app-data .tab.active.boardgamegeek .icon {
+  color: #ff5100;
+}
+
 .bar .app-bar.browser .app-data .tab.reddit .icon {
-  color: $orange;
+  color: #ff4500;
   font-size: 30px;
   padding-top: 4px;
   margin-top: -8px;
@@ -178,11 +205,11 @@
 }
 
 .bar .app-bar.browser .app-data .tab.gmail .icon {
-  color: $red;
+  color: #ad1f1d;
 }
 
 .bar .app-bar.browser .app-data .tab.youtube .icon {
-  color: $red;
+  color: #ff0000;
 }
 
 .bar .app-bar.browser .app-data .tab.github .icon {
@@ -204,6 +231,34 @@
   margin-top: -3px;
 }
 
+.bar .app-bar.calibre .app-logo {
+  background-color: $green;
+}
+
+.bar .app-bar.calibre .app-logo .separator.end {
+  color: $green;
+}
+
+.bar .app-bar.calibre .app-logo .icon {
+  margin-left: -1px;
+  margin-right: -2px;
+}
+
+.bar .app-bar.privefox .app-logo {
+  background-color: $magenta;
+}
+
+.bar .app-bar.privefox .app-logo .separator.end {
+  color: $magenta;
+}
+
+.bar .app-bar.privefox .app-logo .icon {
+  font-size: 28px;
+  margin-left: 1px;
+  margin-bottom: -3px;
+  margin-top: -3px;
+}
+
 .bar .app-bar.gimp .app-logo {
   background-color: $yellow;
 }
@@ -215,6 +270,24 @@
 .bar .app-bar.gimp .app-logo .icon {
   font-size: 20px;
   margin-right: -2px;
+}
+
+
+.bar .app-bar.generic .app-data .separator.start {
+  padding-right: 1rem;
+  color: $background;
+}
+
+
+.bar .app-bar.generic .app-data {
+  background-color: $bg_active_tab;
+  color: $fg_active_tab;
+}
+
+
+.bar .app-bar.generic .app-data .separator.end {
+  color: $bg_active_tab;
+  background-color: $background;
 }
 
 .bar .content .notification-bar {
