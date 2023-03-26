@@ -49,15 +49,15 @@
 }
 
 .bar .app-bar.terminal .app-logo .icon {
-  background-color: $military;
+  background-color: #c0c81f;
 }
 
 .bar .app-bar.terminal .app-logo .separator.end {
-  color: $military;
+  color: #c0c81f;
 }
 
 .bar .app-bar.terminal .app-data .tab .icon {
-  padding: 0 1rem;
+  padding-right: 1rem;
   color: #91a580;
 }
 
@@ -67,10 +67,6 @@
 
 .bar .app-bar.terminal .app-data .tab .icon.folder {
   margin-bottom: -3px;
-}
-
-.bar .app-bar.terminal .app-data .tab .title {
-  padding-right: 1rem;
 }
 
 .bar .app-bar.terminal .app-data .tab {
@@ -104,11 +100,11 @@
 }
 
 .bar .app-bar.browser .app-logo {
-  background-color: $blue;
+  background-color: #1e89c6;
 }
 
 .bar .app-bar.browser .app-logo .separator.end {
-  color: $blue;
+  color: #1e89c6;
 }
 
 .bar .app-bar.browser .app-logo .icon {
@@ -119,7 +115,6 @@
 }
 
 .bar .app-bar.browser .app-data .tab .separator.start {
-  padding-right: 1rem;
   color: $background;
 }
 
@@ -148,10 +143,6 @@
 .bar .app-bar.browser .app-data .tab:not(.active) {
   background-color: $bg_inactive_tab;
   color: $fg_inactive_tab;
-}
-
-.bar .app-bar.browser .app-data .title {
-  padding-right: 1rem;
 }
 
 .bar .app-bar.browser .app-data .tab .separator.end {
@@ -183,6 +174,19 @@
   color: white;
 }
 
+.bar .app-bar.browser .app-data .tab.active.google-drive {
+  background-color: #f7f9fc;
+  color: #444746;
+}
+
+.bar .app-bar.browser .app-data .tab.active.google-drive .separator.end {
+  color: #f7f9fc;
+}
+
+.bar .app-bar.browser .app-data .tab.active.google-drive .icon {
+  color: #1967d2;
+}
+
 .bar .app-bar.browser .app-data .tab.active.boardgamegeek {
   background-color: #3f3a60;
 }
@@ -193,6 +197,19 @@
 
 .bar .app-bar.browser .app-data .tab.active.boardgamegeek .icon {
   color: #ff5100;
+}
+
+.bar .app-bar.browser .app-data .tab.active.libgenesis {
+  background-color: #bbbbbb;
+  color: #000000
+}
+
+.bar .app-bar.browser .app-data .tab.active.libgenesis .separator.end {
+  color: #bbbbbb;
+}
+
+.bar .app-bar.browser .app-data .tab.active.libgenesis .icon {
+  color: #a00000;
 }
 
 .bar .app-bar.browser .app-data .tab.reddit .icon {
@@ -217,11 +234,11 @@
 }
 
 .bar .app-bar.firefox .app-logo {
-  background-color: $orange;
+  background-color: #E66000;
 }
 
 .bar .app-bar.firefox .app-logo .separator.end {
-  color: $orange;
+  color: #E66000;
 }
 
 .bar .app-bar.firefox .app-logo .icon {
@@ -245,11 +262,11 @@
 }
 
 .bar .app-bar.privefox .app-logo {
-  background-color: $magenta;
+  background-color: #8000d7;
 }
 
 .bar .app-bar.privefox .app-logo .separator.end {
-  color: $magenta;
+  color: #8000d7;
 }
 
 .bar .app-bar.privefox .app-logo .icon {
@@ -259,12 +276,20 @@
   margin-top: -3px;
 }
 
+.bar .app-bar.obsidian .app-logo {
+  background-color: #7d5bed;
+}
+
+.bar .app-bar.obsidian .app-logo .separator.end {
+  color: #7d5bed;
+}
+
 .bar .app-bar.gimp .app-logo {
-  background-color: $yellow;
+  background-color: #e2a464;
 }
 
 .bar .app-bar.gimp .app-logo .separator.end {
-  color: $yellow;
+  color: #e2a464;
 }
 
 .bar .app-bar.gimp .app-logo .icon {
@@ -273,19 +298,23 @@
 }
 
 
-.bar .app-bar.generic .app-data .separator.start {
+.bar .app-bar .app-data .separator.start {
   padding-right: 1rem;
   color: $background;
 }
 
+.bar .app-bar .app-data .title {
+  padding-right: 1rem;
+}
 
-.bar .app-bar.generic .app-data {
+
+.bar .app-bar .app-data {
   background-color: $bg_active_tab;
   color: $fg_active_tab;
 }
 
 
-.bar .app-bar.generic .app-data .separator.end {
+.bar .app-bar .app-data .separator.end {
   color: $bg_active_tab;
   background-color: $background;
 }

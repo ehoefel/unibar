@@ -29,9 +29,15 @@ data_collect() {
   elif [ "$app_wclass" = "qutebrowser" ]; then
     app="qutebrowser"
     app_type="browser"
+  elif [ "$app_wclass" = "obsidian" ]; then
+    app="obsidian"
+    app_type="notes"
   elif [[ "$app_wclass" = Gimp-* ]]; then
     app="gimp"
-    app_type="generic"
+    app_type="image-editor"
+  elif [[ "$app_wclass" = hakuneko* ]]; then
+    app="hakuneko"
+    app_type="manga-downloader"
   elif [ "$app_wclass" = "calibre" ]; then
     app="calibre"
     app_type="generic"
@@ -48,6 +54,8 @@ icon() {
     echo ""
   elif [ "$app" = "privefox" ]; then
     echo ""
+  elif [ "$app" = "obsidian" ]; then
+    echo "󱋧"
   elif [ "$app" = "qutebrowser" ]; then
     echo "󰇧"
   elif [ "$app" = "calibre" ]; then
@@ -56,6 +64,10 @@ icon() {
     echo ""
   elif [ "$app_type" = "image-editor" ]; then
     echo "󱇤"
+  elif [ "$app_type" = "manga-downloader" ]; then
+    echo "󱙿"
+  elif [ "$app_type" = "none" ]; then
+    echo "󰟢"
   else
     echo ""
   fi
@@ -96,6 +108,10 @@ parse_webpage_tabs() {
       page="github"
       icon="󰊤"
       content=$(echo $name | sed 's/ . GitHub$//')
+    elif [[ "$url" == *libgen.is/* ]]; then
+      page="libgenesis"
+      icon=""
+      content=$(echo $name | sed 's/ at DuckDuckGo$//')
     elif [[ "$url" == *youtube.com* ]]; then
       page="youtube"
       icon="󰗃"
@@ -119,6 +135,11 @@ parse_webpage_tabs() {
     elif [[ "$url" == *nerdfonts.com/* ]]; then
       page="nerdfonts"
       icon="󰊪"
+    elif [[ "$url" == *drive.google.*/* ]]; then
+      page="google-drive"
+      icon="󰊶"
+      content=$(echo $name | sed 's/ - Google Drive.*//')
+
     fi
 
     content=$(echo $content | sed 's/\(.\{40\}\w\{0,5\}\).\{3,\}/\1.../')
@@ -215,6 +236,8 @@ app_info() {
     info="(box :class \"tab active\" :space-evenly \"false\" $info_content)"
   elif [ "$app" = "qutebrowser" ]; then
     info=$(parse_webpage_tabs)
+  elif [ "$app_type" = "none" ]; then
+    info=""
   else
     div_start="(label :class \"separator start\" :text \"\")"
     div_end="(label :class \"separator end\" :text \"\")"
