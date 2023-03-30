@@ -3,7 +3,7 @@
 get_focused_app(){
   SWAYSOCK=$(find /run/user/1000 -maxdepth 1 -name 'sway-ipc*')
   swaymsg -t get_tree \
-    | jq '.. | try select(.focused == true)'
+    | jq '.nodes[] | try select (.name == "eDP-1") | .nodes[] | .. | try select(.visible == true)'
 }
 
 data_collect() {
