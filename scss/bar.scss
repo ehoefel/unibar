@@ -1,3 +1,7 @@
+.bar {
+  background-color: black;
+}
+
 .bar .content {
   font-family: JetBrains Mono;
   background-color: $background;
@@ -283,6 +287,20 @@
 .bar .app-bar.obsidian .app-logo .separator.end {
   color: #7d5bed;
 }
+
+
+.bar .app-bar.volume-control .app-logo {
+  background-color: #729fcf;
+}
+
+.bar .app-bar.volume-control .app-logo .separator.end {
+  color: #729fcf;
+}
+
+.bar .app-bar.volume-control .app-logo .icon {
+  font-size: 20px;
+}
+
 
 .bar .app-bar.gimp .app-logo {
   background-color: #e2a464;

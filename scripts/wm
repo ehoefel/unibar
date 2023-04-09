@@ -7,10 +7,14 @@ get_focused_app(){
 }
 
 data_collect() {
+  set -x
   curr_app=`get_focused_app`
   app_name=`echo $curr_app | jq -r '.name'`
   app_wclass=`echo $curr_app | jq -r '.window_properties.class'`
   app_wtitle=`echo $curr_app | jq -r '.window_properties.title'`
+  if [ -z "$app_wtitle" -o "$app_wtitle" = null ]; then
+    app_wtitle=$app_name
+  fi
   app_id=`echo $curr_app | jq -r '.app_id'`
   app_pid=`echo $curr_app | jq -r '.pid'`
 
@@ -26,9 +30,12 @@ data_collect() {
       app="firefox"
     fi
     app_type="browser"
-  elif [ "$app_wclass" = "qutebrowser" ]; then
+  elif [[ "$app_id" = *"qutebrowser" ]]; then
     app="qutebrowser"
     app_type="browser"
+  elif [ "$app_id" = "pavucontrol" ]; then
+    app="pavucontrol"
+    app_type="volume-control"
   elif [ "$app_wclass" = "obsidian" ]; then
     app="obsidian"
     app_type="notes"
@@ -66,6 +73,8 @@ icon() {
     echo "󱇤"
   elif [ "$app_type" = "manga-downloader" ]; then
     echo "󱙿"
+  elif [ "$app_type" = "volume-control" ]; then
+    echo "󰴸"
   elif [ "$app_type" = "none" ]; then
     echo "󰟢"
   else
